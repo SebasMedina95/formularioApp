@@ -1,0 +1,89 @@
+<h2>Template: <span class="badge bg-warning">Dinámicos.</span> </h2>
+<hr>
+
+<form action="" 
+      (ngSubmit)="guardar()"
+      #miFormularioPersona="ngForm"
+      autocomplete="off">
+
+
+    <!-- Campo de Persona -->
+    <div class="mb-3 row">
+        <span class="form-text alert alert-danger"
+            *ngIf="miFormularioPersona.controls.persona?.errors && miFormularioPersona.controls.persona?.touched">
+            El campo nombre de persona es obligatorio ...
+        </span>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id=""><b>Persona:</b></span>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Nombre del Persona ..." 
+                   [(ngModel)]="persona.nombre"
+                   name="persona"
+                   required>
+        </div>
+    </div>
+
+    <!-- Agregar Juego Favorito -->
+    <div class="mb-3 row">
+
+        <div class="input-group mb-3">
+
+            <div class="input-group mb-3">
+                <input type="text" 
+                       class="form-control" 
+                       placeholder="Agregar Juego Favorito ..."
+                       [(ngModel)]="nuevoJuego"
+                       name="nuevoJuego"
+                       (keyup.enter)="agregarJuego()"> <!-- (keyup.enter) para que con el ENTER dispare una acción. -->
+                <button class="btn btn-outline-primary" 
+                        type="button"
+                        (click)="agregarJuego()">Agregar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Lista juegos Favoritos -->
+    <div class="mb-3 row">
+
+        <div class="col">
+            <label class="col"><b>Listado de Juegos Favoritos:</b></label>
+            <hr>
+            <!-- Usamos la interpolación de String para poder colocar un elemento unico y que  no se repita el NgFor.
+            Podíamos colocar cualquier nombre, en este caso favorito_ y al colocar la referencia i como indice del momento
+            convertimos el elemento en un campo único. Con [(ngModel)] podrémos emitir y ver los cambios en tiempo real. -->
+            <div class="input-group mb-1"
+                 *ngFor="let juego of persona.favoritos; let i = index">
+                <input  [(ngModel)]="juego.nombre"
+                        name="favorito_{{ i }}"
+                        class="form-control">
+                <button class="btn btn-outline-danger" 
+                        type="button"
+                        (click)="quitarJuego( i )">Quitar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div class="row">
+        <div class="col">
+            <button type="button"
+                    class="btn btn-primary float-end"
+                    [disabled]="miFormularioPersona.invalid"
+                    (click)="guardar()">
+                Guardar
+            </button>
+        </div>
+    </div>
+</form>
+
+
+
+<span>Persona</span>
+<pre> {{persona | json}} </pre>

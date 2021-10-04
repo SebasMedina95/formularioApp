@@ -1,0 +1,109 @@
+<h2>Template: <span class="badge bg-success">Básicos.</span> </h2>
+<hr>
+
+<div class="row">
+    <div class="col">
+        <!-- Consideramos una referencia local y le especificamos ngForm para enlace la 
+        referencia de NgForm al formulario -->
+        <form (ngSubmit)="guardarInfo()" 
+              #miFormulario="ngForm"
+              autocomplete="off">
+
+            <!-- Campo del Producto -->
+            <div class="mb-3 row">
+
+                <!-- Vamos a calidar esto mejor para que no sea tan complejo el HTML. -->
+                <!-- <span class="form-text alert alert-danger"
+                      //*ngIf="miFormulario.controls.producto?.invalid && 
+                             miFormulario.controls.producto?.touched">  Si imprimimos el formulario completo, vemos en las propiedades que tenemos en el formulario, la opción de contorls y allí tenemos todos los elementos listados, el signo ? permite evaluar si existe el elemento en el momento con el and && aplico la siguiente validación, si el elemento fue tocado, con el touched, disparamos el span.
+                    El nombre del Producto débe tener mínimo 3 letras ...
+                </span> -->
+
+                <span class="form-text alert alert-danger"
+                      *ngIf="validarNombreProducto()">
+                    El nombre del Producto débe tener mínimo 3 letras ...
+                </span>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id=""><b>P</b></span>
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Nombre del Producto ..." 
+                           [ngModel]="valorInicial.producto"
+                           name="producto"
+                           required
+                           minlength="3"> <!--Al agregar ngModel obligamos a Angular para que los tome, el atributo name se vuelve obligatorio por esto, entonces debemos anexarlo-->
+                </div>
+            </div>
+
+            <!-- Campo del Precio del Producto  -->
+            <div class="mb-3 row">
+
+                <span class="form-text alert alert-danger"
+                      *ngIf="validarPrecioProducto()">
+                    El precio del Producto débe ser mayor a $0 ...
+                </span>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id=""><b>$</b></span>
+                    <input type="number" 
+                        class="form-control" 
+                        placeholder="$ del del Producto ..." 
+                        [ngModel]="valorInicial.precio"
+                        name="precio"> <!--Al agregar ngModel obligamos a Angular para que los tome, el atributo name se vuelve obligatorio por esto, entonces debemos anexarlo-->
+                </div>
+            </div>
+
+            <!-- Campo de la cantidad de Existencias del Producto -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id=""><b>#</b></span>
+                <input type="number" 
+                       class="form-control" 
+                       placeholder="Existencias del del Producto ..."
+                       required 
+                       [ngModel]="valorInicial.existencias"
+                       name="existencias"
+                       directivaCustomMin
+                       [valorMinimo] = "0"> <!--Al agregar ngModel obligamos a Angular para que los tome, el atributo name se vuelve obligatorio por esto, entonces debemos anexarlo, directivaCustomMin la creamos para poder extender las funcionalidades, esta directiva le va extender el valor a valorMinimo que luego usaremos los input para poder manejarlo en custom.min.directive.ts-->
+            </div>
+
+            <!-- Botones -->
+            <div class="row">
+                <div class="col">
+                    <button type="submit"
+                            class="btn btn-primary float-end"
+                            [disabled]="miFormulario.invalid">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+
+<!-- Visualizar cierta información según la referencia local definida en el Form anterior -->
+<div class="row">
+    <div class="col">
+        <!-- Recordemos que esta es la referencia local definida en el anterior formulario. -->  
+        
+        <span><b>Valid</b></span>                           <!-- Valida que los campos hayan tenido algún cambio de su valor inicial y lo captura -->
+        <hr>
+        <pre> {{ miFormulario.valid | json }} </pre>
+        <span><b>Pristine</b></span>                        <!-- Pristine es si no se han cambiado los valores iniciales con que se cargo el Form -->
+        <hr>
+        <pre> {{ miFormulario.pristine | json }} </pre>     
+        <span><b>Touched</b></span>                         <!-- Significa si el usuario ha tocado el formulario, no necesariamente si hizo cambios, interacción. -->
+        <hr>
+        <pre> {{ miFormulario.touched | json }} </pre>
+        <span><b>Value</b></span>                           <!-- Presentar los valores asociados al formulario, la información registrada/que se va registrando -->
+        <hr>
+        <pre> {{ miFormulario.value | json }} </pre>
+        <!-- ***************************************************************************************************************************************************************** -->
+        <span><b>CustomDirective</b></span>                 
+        <hr>
+        <pre> {{ miFormulario.controls.existencias?.errors  | json }} </pre>
+    </div>
+</div>

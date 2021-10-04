@@ -1,0 +1,96 @@
+<h2>Reactive: <span class="badge bg-success">Básicos.</span> </h2>
+<hr>
+
+<div class="row">
+    <div class="col">
+
+        <form autocomplete="off"
+              [formGroup] = "miFormulario"
+              (ngSubmit)="guardar()">  <!-- Defino el trabajo del formulario [formGroup] y hago referencia a la variable miFormulario -->
+
+            <!-- Campo del Producto -->
+            <div class="mb-3 row">
+
+                <span class="form-text alert alert-danger"
+                      *ngIf="campoEsValido('producto')">   <!-- Le mando el parámetro con el nombre que le definimos a la propiedad -->
+                    El nombre del Producto débe tener mínimo 3 letras ...
+                </span>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id=""><b>P</b></span>
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Nombre del Producto ..."
+                           formControlName="producto">          <!--Para hacer alusión al campo del TS, coloco formControlName y lo hago igual al nombre que le asigne en las etiquetas FormGroup de mi miFormulario-->
+                </div>
+            </div>
+
+            <!-- Campo del Precio del Producto  -->
+            <div class="mb-3 row">
+
+                <span class="form-text alert alert-danger"
+                      *ngIf="campoEsValido('precio')">  <!-- Le mando el parámetro con el nombre que le definimos a la propiedad -->
+                    El precio del Producto débe ser mayor a $0 y es obligatorio que haya valor ...
+                </span>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id=""><b>$</b></span>
+                    <input type="number" 
+                           class="form-control" 
+                           placeholder="$ del del Producto ..."
+                           formControlName="precio">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <span class="form-text alert alert-danger"
+                      *ngIf="campoEsValido('existencias')">   <!-- Le mando el parámetro con el nombre que le definimos a la propiedad -->
+                    Las existencias son requeridas y ser mayor a 0 ...
+                </span>
+
+                <!-- Campo de la cantidad de Existencias del Producto -->
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id=""><b>#</b></span>
+                    <input type="number" 
+                        class="form-control" 
+                        placeholder="Existencias del del Producto ..."
+                        formControlName="existencias"> 
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="row">
+                <div class="col">
+                    <button type="submit"
+                            class="btn btn-primary float-end">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+
+<!-- Visualizar cierta información según la referencia local definida en el Form anterior -->
+<div class="row">
+    <div class="col">
+        
+        <span><b>Valid</b></span>                           
+        <hr>
+        <pre> {{ miFormulario.valid | json }} </pre>
+        <span><b>Pristine</b></span>                        
+        <hr>
+        <pre> {{ miFormulario.pristine | json }} </pre>     
+        <span><b>Touched</b></span>                        
+        <hr>
+        <pre> {{ miFormulario.touched | json }} </pre>
+        <span><b>Value</b></span>                           
+        <hr>
+        <pre> {{ miFormulario.value | json }} </pre>
+
+    </div>
+</div>
+

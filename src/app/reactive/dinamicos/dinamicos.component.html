@@ -1,0 +1,99 @@
+<h2>Reactive: <span class="badge bg-warning">Dinámicos.</span> </h2>
+<hr>
+
+<form action="" 
+      autocomplete="off"
+      [formGroup] = "miFormulario"
+      (ngSubmit)="guardar()">
+
+
+    <!-- Campo de Persona -->
+    <div class="mb-3 row">
+        <span class="form-text alert alert-danger"
+              *ngIf="campoEsValido('persona')">
+            El campo nombre de persona es obligatorio y debe tener al menos 3 caracteres ...
+        </span>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id=""><b>Persona:</b></span>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Nombre del Persona ..."
+                   formControlName="persona">
+        </div>
+    </div>
+
+    <!-- Agregar Juego Favorito -->
+    <div class="mb-3 row">
+
+        <div class="input-group mb-3">
+
+            <div class="input-group mb-3">
+                <input type="text" 
+                       class="form-control"
+                       [formControl]="nuevoFavorito"   
+                       placeholder="Agregar Juego Favorito ..."
+                       (keyup.enter)="agregarJuegoFavorito()"> <!-- (keyup.enter) para que con el ENTER dispare una acción. -->
+                                          <!-- ¿Por qué usamos formControl y no formControlName? Por que si usamos formControlName el va a buscar el control nuevoFavorito en miFormulario, por tanto, con formControl lo buscaremos en un elemento aislado, y es lo que necesitamosy lo metemos entre [] para acceder a las propiedades y al elemento como tal -->
+                <button class="btn btn-outline-primary" 
+                        type="button"
+                        (click)="agregarJuegoFavorito()">Agregar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Lista juegos Favoritos -->
+    <div class="mb-3 row">
+
+        <div class="col">
+            <label class="col"><b>Listado de Juegos Favoritos:</b></label>
+            <hr>
+
+            <div class="col-sm-9" formArrayName="favoritos"> <!-- Definimos la propiedad exactamente como se llama en el FormGroup de mi miFormulario -->
+
+                <div class="input-group mb-1"
+                    *ngFor="let favorito of favoritosArray.controls; let i = index">  <!-- favoritosArray viene del get en TS que definimos para determinar que la propiedad de favoritos alojada en miFormulario es de tipo FormArray -->
+                    <input  class="form-control"
+                            [formControlName]="i"> <!-- Los controles están basados en la posición indice, en este caso, i -->
+
+                    <button class="btn btn-outline-danger" 
+                            type="button"
+                            (click)="quitarJuegoFavorito(i)">Quitar <!-- Mandamos i que es el que tiene el control en su posición del recorrido del ngFor -->
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div class="row">
+        <div class="col">
+            <button type="button"
+                    class="btn btn-primary float-end"
+                    (click)="guardar()">
+                Guardar
+            </button>
+        </div>
+    </div>
+</form>
+
+
+
+<span>Valid</span>
+<pre> {{ miFormulario.valid }} </pre>
+
+<span>Value</span>
+<pre> {{ miFormulario.value | json }} </pre>
+
+<span>Value Nuevo Favorito</span>
+<pre> {{ nuevoFavorito.valid | json }} </pre>
+<pre> {{ nuevoFavorito.value | json }} </pre>
+
+<!-- <span>Persona</span>
+<pre> {{persona | json}} </pre> -->
